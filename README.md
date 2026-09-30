@@ -26,6 +26,11 @@ de administrador: se descarga y se ejecuta.
 Para probar la aplicación **no hace falta compilar nada ni clonar el repositorio**. Si
 querés trabajar sobre el código, mirá [Compilar desde el código](#compilar-desde-el-código).
 
+![El editor con el diccionario de ejemplo abierto](assets/editor.png)
+
+*El editor con el diccionario de ejemplo: a la izquierda las tablas, en el medio los campos
+de la tabla elegida y a la derecha las propiedades del elemento seleccionado.*
+
 ## El problema que resuelve
 
 Cuando el modelo de datos no está declarado en ningún lado, cada pantalla lo resuelve como
