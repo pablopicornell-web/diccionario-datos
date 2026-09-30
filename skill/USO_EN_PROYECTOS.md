@@ -3,7 +3,7 @@
 Versión del documento: 2.0  
 Fuente canónica de la skill: el repositorio canónico de la skill
 
-Este documento explica cómo incorporar el sistema **Diccionario** a cualquier proyecto concreto, por ejemplo `proyecto-ejemplo`, de modo que ChatGPT web y Codex local utilicen exactamente la misma especificación.
+Este documento explica cómo incorporar el sistema **Diccionario** a cualquier proyecto concreto, por ejemplo `proyecto-ejemplo`, de modo que el asistente de diseño (por ejemplo, ChatGPT web o cualquier otro asistente conversacional con acceso al archivo) y el agente de programación (por ejemplo, Codex o cualquier otro agente con acceso al código del proyecto) utilicen exactamente la misma especificación.
 
 La skill y su contrato no se duplican por proyecto. La fuente oficial permanece en el repositorio canónico de la skill.
 
@@ -15,9 +15,25 @@ Archivos canónicos:
 
 El archivo concreto de cada proyecto será `DiccionarioDatos.yaml`, pero su ubicación se define por proyecto.
 
-Cuando ChatGPT web y Codex local deban trabajar sobre el mismo archivo, se recomienda ubicarlo en una carpeta compartida/sincronizada accesible por ambos. En el flujo actual, normalmente será una carpeta de Google Drive sincronizada localmente.
+Cuando el asistente de diseño y el agente de programación deban trabajar sobre el mismo archivo, se recomienda ubicarlo en una carpeta compartida/sincronizada accesible por ambos. En el flujo actual, normalmente será una carpeta de Google Drive sincronizada localmente.
 
 La ruta concreta debe registrarse en `Docs/DICCIONARIO.md` o indicarse explícitamente por el usuario.
+
+---
+
+## Cómo leer este documento
+
+- **Si sos la persona que decide**, empezá por [`PUESTA_EN_MARCHA.md`](PUESTA_EN_MARCHA.md): tiene los pasos en orden, los requisitos de la carpeta compartida y los mensajes listos para copiar y pegar.
+- **Si sos el asistente de diseño**, te corresponde la **Parte A** y el **Modo Diseñador**.
+- **Si sos el agente de programación**, te corresponde la **Parte B** y el **Modo Implementador**.
+
+| Rol | Modo | Qué se espera de él |
+| --- | --- | --- |
+| La persona | — | Decide qué datos necesita el sistema, aprueba los cambios, mantiene la carpeta compartida y habilita a los otros dos roles. |
+| Asistente de diseño | Modo Diseñador | Convierte necesidades funcionales en modelo de datos y deja las decisiones escritas en el diccionario. |
+| Agente de programación | Modo Implementador | Implementa respetando el contrato; si hace falta cambiarlo, se cambia primero el diccionario. |
+
+El sistema funciona con cualquier combinación de herramientas: **no es obligatorio usar ChatGPT ni Codex**. Cuando este documento dice *asistente de diseño* o *agente de programación*, se refiere a roles, no a productos concretos.
 
 ---
 
@@ -25,14 +41,14 @@ La ruta concreta debe registrarse en `Docs/DICCIONARIO.md` o indicarse explícit
 
 En un proyecto que adopta Diccionario:
 
-- ChatGPT usa la skill en **Modo Diseñador**.
-- Codex usa la misma skill en **Modo Implementador**.
+- El asistente de diseño usa la skill en **Modo Diseñador**.
+- El agente de programación usa la misma skill en **Modo Implementador**.
 - La aplicación local Diccionario es opcional y sirve como editor visual.
 - `DiccionarioDatos.yaml` es la única fuente de verdad del modelo de datos del proyecto.
 - La skill canónica siempre se mantiene en el repositorio canónico de la skill.
-- Cada proyecto local puede instalar una copia de la skill para que Codex la tenga disponible sin depender de releer el repositorio en cada tarea.
+- Cada proyecto local puede instalar una copia de la skill para que el agente de programación la tenga disponible sin depender de releer el repositorio en cada tarea.
 
-La aplicación local, ChatGPT y Codex deben interpretar el YAML con el mismo contrato.
+La aplicación local, el asistente de diseño y el agente de programación deben interpretar el YAML con el mismo contrato.
 
 ---
 
@@ -44,8 +60,8 @@ Cada proyecto que use Diccionario debe registrar como mínimo:
 2. qué versión de la skill utiliza;
 3. qué `format_version` utiliza;
 4. dónde está su `DiccionarioDatos.yaml`;
-5. cómo accede ChatGPT al archivo;
-6. cómo accede Codex al archivo localmente.
+5. cómo accede el asistente de diseño al archivo;
+6. cómo accede el agente de programación al archivo localmente.
 
 Se recomienda guardar esta información en:
 
@@ -63,10 +79,10 @@ Format version: 2
 Archivo maestro:
 <ruta compartida definida para este proyecto>
 
-Acceso ChatGPT:
+Acceso del asistente de diseño:
 Google Drive / carpeta compartida correspondiente
 
-Acceso Codex:
+Acceso del agente de programación:
 <ruta local sincronizada al mismo archivo>
 ```
 
@@ -74,11 +90,11 @@ No existe una ruta predeterminada universal. La ruta debe quedar definida para c
 
 ---
 
-# PARTE A — CHATGPT WEB
+# PARTE A — EL ASISTENTE DE DISEÑO
 
-## 3. Cómo activar Diccionario en un proyecto de ChatGPT
+## 3. Cómo activar Diccionario con el asistente de diseño
 
-Al comenzar a utilizar Diccionario en un proyecto nuevo, el usuario debe indicarle a ChatGPT algo equivalente a:
+Al comenzar a utilizar Diccionario en un proyecto nuevo, el usuario debe indicarle al asistente de diseño algo equivalente a:
 
 > Este proyecto utiliza el sistema Diccionario.  
 > La especificación canónica está en la carpeta `skill/` del repositorio canónico de la skill.  
@@ -86,15 +102,15 @@ Al comenzar a utilizar Diccionario en un proyecto nuevo, el usuario debe indicar
 > Trabajá en Modo Diseñador.  
 > El archivo maestro de este proyecto es `DiccionarioDatos.yaml`. Su ubicación concreta debe tomarse de `Docs/DICCIONARIO.md` o de la indicación explícita del usuario.
 
-ChatGPT debe entonces consultar la skill canónica desde el repositorio canónico antes de diseñar o modificar el diccionario.
+El asistente de diseño debe entonces consultar la skill canónica desde el repositorio canónico antes de diseñar o modificar el diccionario.
 
 No depender de recordar una conversación anterior.
 
 ---
 
-## 4. Responsabilidad de ChatGPT
+## 4. Responsabilidad del asistente de diseño
 
-Cuando el usuario describe una necesidad funcional, ChatGPT debe:
+Cuando el usuario describe una necesidad funcional, el asistente de diseño debe:
 
 1. analizar qué datos necesita el sistema;
 2. determinar tablas y campos;
@@ -107,13 +123,13 @@ Cuando el usuario describe una necesidad funcional, ChatGPT debe:
 9. aplicar lifecycle, deprecación y demás propiedades cuando corresponda;
 10. actualizar `DiccionarioDatos.yaml` siguiendo el protocolo de lock, backup e historial.
 
-El objetivo es que Codex reciba las decisiones de datos ya resueltas y tenga que inferir lo mínimo posible.
+El objetivo es que el agente de programación reciba las decisiones de datos ya resueltas y tenga que inferir lo mínimo posible.
 
 ---
 
-## 5. Creación de un diccionario nuevo desde ChatGPT
+## 5. Creación de un diccionario nuevo desde el asistente de diseño
 
-Si el proyecto todavía no tiene `DiccionarioDatos.yaml` en la ubicación acordada, ChatGPT debe:
+Si el proyecto todavía no tiene `DiccionarioDatos.yaml` en la ubicación acordada, el asistente de diseño debe:
 
 1. leer la skill canónica;
 2. conversar con el usuario sobre las necesidades de datos;
@@ -122,13 +138,13 @@ Si el proyecto todavía no tiene `DiccionarioDatos.yaml` en la ubicación acorda
 5. guardarlo en la ubicación acordada;
 6. a partir de ese momento tratarlo como fuente de verdad.
 
-Si la ubicación compartida es Google Drive, ChatGPT accede mediante el conector de Google Drive.
+Si la ubicación compartida es Google Drive, el asistente de diseño accede mediante el conector de Google Drive.
 
 Google Drive sólo es transporte/sincronización; no cambia el contrato del archivo.
 
 ---
 
-## 6. Modificación de un diccionario existente desde ChatGPT
+## 6. Modificación de un diccionario existente desde el asistente de diseño
 
 Antes de modificar:
 
@@ -147,17 +163,17 @@ Si encuentra un lock de otro escritor, puede consultar el YAML pero no modificar
 
 ---
 
-# PARTE B — CODEX LOCAL
+# PARTE B — EL AGENTE DE PROGRAMACIÓN
 
-## 7. Instalación de la skill en un proyecto Codex
+## 7. Instalación de la skill en un proyecto del agente de programación
 
-En un proyecto local que adopta Diccionario, Codex debe instalar una copia local de la skill canónica desde:
+En un proyecto local que adopta Diccionario, el agente de programación debe instalar una copia local de la skill canónica desde:
 
 `skill/` del repositorio canónico
 
-Debe utilizar el mecanismo real de skills disponible en su entorno Codex.
+Debe utilizar el mecanismo real de skills disponible en su entorno, si dispone de uno.
 
-No inventar una ubicación si Codex ofrece una carpeta o comando oficial para skills.
+No inventar una ubicación si el agente de programación ofrece una carpeta o comando oficial para skills.
 
 La instalación debe incluir como mínimo:
 
@@ -173,9 +189,9 @@ Ver "Dónde vive el archivo maestro" más abajo, en esta misma sección, para la
 
 El diccionario no se guarda dentro del repositorio del proyecto. Vive en una
 carpeta compartida a la que puedan llegar los tres actores que participan:
-la persona que decide, ChatGPT web (Modo Diseñador) y Codex (Modo
-Implementador). El editor visual es la herramienta con la que la persona
-trabaja sobre ese mismo archivo.
+la persona que decide, el asistente de diseño (Modo Diseñador) y el agente de
+programación (Modo Implementador). El editor visual es la herramienta con la
+que la persona trabaja sobre ese mismo archivo.
 
 En el flujo actual esa carpeta es una carpeta de Google Drive sincronizada
 localmente:
@@ -185,11 +201,11 @@ localmente:
         DiccionarioDatos.lock      (existe sólo durante una sesión de escritura)
         historial/
 
-¿Por qué una carpeta compartida y no el repositorio? Porque ChatGPT web no
-puede ver el disco del equipo, Codex trabaja sobre la copia sincronizada y el
-editor abre ese mismo archivo. Google Drive es el punto de encuentro común y
-es solo transporte: no forma parte del contrato y no cambia el formato del
-archivo.
+¿Por qué una carpeta compartida y no el repositorio? Porque el asistente de
+diseño no puede ver el disco del equipo, el agente de programación trabaja
+sobre la copia sincronizada y el editor abre ese mismo archivo. Google Drive es
+el punto de encuentro común y es solo transporte: no forma parte del contrato y
+no cambia el formato del archivo.
 
 No hay una ruta predeterminada universal. La ubicación concreta de cada
 proyecto se registra en `Docs/DICCIONARIO.md` del proyecto consumidor.
@@ -227,9 +243,9 @@ La skill 2.0.0 usa `format_version: 2`. El cambio estructural principal es `disp
 
 ---
 
-## 9. Responsabilidad de Codex
+## 9. Responsabilidad del agente de programación
 
-Codex trabaja en **Modo Implementador**.
+El agente de programación trabaja en **Modo Implementador**.
 
 Antes de crear o modificar cualquier estructura relacionada con datos debe:
 
@@ -240,13 +256,13 @@ Antes de crear o modificar cualquier estructura relacionada con datos debe:
 5. respetar nombres, relaciones, longitudes, UI básica, lifecycle, i18n y demás metadata definida;
 6. no inventar decisiones ya presentes en el diccionario.
 
-Codex debe concentrarse principalmente en implementación y lógica de negocio.
+El agente de programación debe concentrarse principalmente en implementación y lógica de negocio.
 
 ---
 
-## 10. Cuando Codex necesita cambiar el modelo
+## 10. Cuando el agente de programación necesita cambiar el modelo
 
-Si durante el desarrollo Codex detecta que hace falta:
+Si durante el desarrollo el agente de programación detecta que hace falta:
 
 - una tabla;
 - un campo;
@@ -264,9 +280,9 @@ El diccionario manda sobre el modelo de datos.
 
 ---
 
-## 11. Protocolo de modificación para Codex
+## 11. Protocolo de modificación para el agente de programación
 
-Codex debe aplicar exactamente el mismo protocolo:
+El agente de programación debe aplicar exactamente el mismo protocolo:
 
 1. lectura libre;
 2. comprobar/adquirir lock antes de editar;
@@ -302,7 +318,7 @@ Permite:
 - detectar conflictos;
 - consultar de forma visual el modelo.
 
-La aplicación debe respetar la misma especificación canónica que ChatGPT y Codex.
+La aplicación debe respetar la misma especificación canónica que el asistente de diseño y el agente de programación.
 
 ---
 
@@ -321,23 +337,23 @@ Crear `Docs/DICCIONARIO.md` con:
 - repositorio canónico;
 - versión de skill;
 - ubicación del YAML;
-- accesos ChatGPT/Codex.
+- accesos del asistente de diseño y del agente de programación.
 
 ### Paso 2
 
-ChatGPT carga la skill canónica en Modo Diseñador.
+El asistente de diseño carga la skill canónica en Modo Diseñador.
 
 ### Paso 3
 
-Codex instala la misma skill localmente en Modo Implementador.
+El agente de programación instala la misma skill localmente en Modo Implementador.
 
 ### Paso 4
 
-ChatGPT y el usuario diseñan `DiccionarioDatos.yaml` en la ubicación compartida definida para el proyecto.
+El asistente de diseño y el usuario diseñan `DiccionarioDatos.yaml` en la ubicación compartida definida para el proyecto.
 
 ### Paso 5
 
-Codex implementa el proyecto consumiendo ese archivo.
+El agente de programación implementa el proyecto consumiendo ese archivo.
 
 ### Paso 6
 
@@ -345,7 +361,7 @@ El usuario puede abrir el mismo archivo con la aplicación visual Diccionario cu
 
 ---
 
-## 14. Ejemplo de instrucción inicial para ChatGPT
+## 14. Ejemplo de instrucción inicial para el asistente de diseño
 
 ```text
 Este proyecto utiliza el sistema Diccionario.
@@ -362,7 +378,7 @@ Antes de diseñar o modificar datos, leé la skill y respetá su protocolo compl
 
 ---
 
-## 15. Ejemplo de instrucción inicial para Codex
+## 15. Ejemplo de instrucción inicial para el agente de programación
 
 ```text
 Este proyecto utiliza el sistema Diccionario.
@@ -370,7 +386,7 @@ Este proyecto utiliza el sistema Diccionario.
 Instalá o actualizá la skill canónica desde:
 `skill/` del repositorio canónico
 
-Usá el mecanismo oficial de skills disponible en este entorno Codex.
+Usá el mecanismo oficial de skills de tu agente, si dispone de uno.
 
 Registrá la versión instalada en Docs/DICCIONARIO.md.
 
@@ -390,7 +406,7 @@ El mantenimiento se realiza siempre en el repositorio canónico de la skill.
 Flujo:
 
 1. modificar especificación/skill en el repositorio canónico;
-2. probar ChatGPT y Codex contra la nueva versión;
+2. probar el asistente de diseño y el agente de programación contra la nueva versión;
 3. incrementar la versión de la skill cuando corresponda;
 4. adaptar la aplicación local si el cambio afecta al editor;
 5. actualizar otros proyectos sólo cuando se decida hacerlo.
@@ -407,4 +423,4 @@ La fuente canónica es siempre:
 
 Nunca mantener dos interpretaciones independientes del formato.
 
-ChatGPT, Codex y la aplicación local deben derivar su comportamiento de la misma especificación canónica.
+El asistente de diseño, el agente de programación y la aplicación local deben derivar su comportamiento de la misma especificación canónica.

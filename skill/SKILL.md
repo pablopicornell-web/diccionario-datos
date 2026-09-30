@@ -1,3 +1,8 @@
+---
+name: diccionario
+description: Define, revisa y mantiene el modelo de datos de un proyecto en DiccionarioDatos.yaml (format_version 2). Usar en Modo Diseñador para crear o modificar el diccionario, y en Modo Implementador para consumirlo sin inventar nombres, tipos, relaciones, etiquetas ni presentación ya definidos. Incluye el protocolo de edición (bloqueo, respaldo, historial y guardado seguro).
+---
+
 # Skill Diccionario
 
 Versión de skill: 2.0.0  
@@ -11,7 +16,7 @@ El archivo `DiccionarioDatos.yaml` es la fuente de verdad del modelo de datos de
 
 La ubicación de `DiccionarioDatos.yaml` se define por proyecto.
 
-Cuando ChatGPT web y Codex local deban compartir y modificar el mismo archivo, la ubicación recomendada es una carpeta compartida/sincronizada accesible por ambos; en el flujo actual, normalmente una carpeta de Google Drive sincronizada localmente.
+Cuando el asistente de diseño (por ejemplo, ChatGPT web o cualquier otro asistente conversacional con acceso al archivo) y el agente de programación (por ejemplo, Codex o cualquier otro agente con acceso al código del proyecto) deban compartir y modificar el mismo archivo, la ubicación recomendada es una carpeta compartida/sincronizada accesible por ambos; en el flujo actual, normalmente una carpeta de Google Drive sincronizada localmente.
 
 La ruta concreta debe quedar registrada en `Docs/DICCIONARIO.md` o ser indicada explícitamente por el usuario. No asumir `Docs/DiccionarioDatos.yaml` como ruta por defecto. Ver "Dónde vive el archivo maestro" en `USO_EN_PROYECTOS.md`.
 
@@ -134,6 +139,8 @@ Orígenes habituales:
 - chatgpt
 - codex
 - manual
+
+El origen identifica **qué actor** hizo la edición. Los cuatro anteriores son los habituales del flujo de trabajo actual; si el proyecto usa otro asistente o agente, se registra su nombre.
 
 ## Creación de un diccionario nuevo
 

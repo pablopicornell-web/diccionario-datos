@@ -1,0 +1,200 @@
+# Puesta en marcha en un proyecto
+
+Esta guía es para **la persona que decide**. Los otros dos actores —el asistente de diseño y el
+agente de programación— tienen sus instrucciones en
+[`USO_EN_PROYECTOS.md`](USO_EN_PROYECTOS.md); acá está lo que hay que hacer, en orden, y los
+mensajes que hay que pasarles.
+
+Funciona con **cualquier combinación de herramientas**. Cuando esta guía dice *asistente de
+diseño* se refiere a cualquier asistente conversacional con acceso al archivo del diccionario
+(por ejemplo, ChatGPT web); cuando dice *agente de programación* se refiere a cualquier agente
+con acceso al código del proyecto (por ejemplo, Codex). No es obligatorio usar ninguno de los
+dos en particular.
+
+---
+
+## Antes de empezar: dónde va a vivir el diccionario
+
+El diccionario **no se guarda dentro del repositorio del proyecto**. Vive en una carpeta
+compartida, porque los tres actores tienen que poder llegar al mismo archivo:
+
+- el asistente de diseño **no puede ver el disco** de tu equipo;
+- el agente de programación trabaja sobre la **copia local sincronizada**;
+- el editor abre **ese mismo archivo**.
+
+### Paso 0 — Preparar la carpeta compartida
+
+1. En **Google Drive**, creá una carpeta para el proyecto. La convención del flujo actual es
+   `AI-Proyectos/<Proyecto>`.
+2. Instalá **Google Drive para escritorio** e iniciá sesión, para que esa carpeta quede
+   **sincronizada y disponible localmente** en tu equipo (aparece en el Explorador de Windows,
+   como "Mi unidad" o como unidad virtual). Sin este paso, el agente de programación y el editor
+   no ven el archivo, y el asistente de diseño tampoco, porque el punto de encuentro es Drive.
+3. Verificá que puedas crear un archivo en esa carpeta desde el Explorador y verlo después en
+   Drive web. Esa ida y vuelta es la que garantiza que los tres actores van a ver lo mismo.
+
+Adentro de esa carpeta van a convivir tres cosas:
+
+```text
+<Carpeta compartida>/AI-Proyectos/<Proyecto>/
+    DiccionarioDatos.yaml          el archivo maestro: la fuente de verdad
+    DiccionarioDatos.lock          existe sólo mientras hay una sesión de escritura
+    historial/                     los respaldos y el resumen de cada sesión de edición
+```
+
+**Google Drive es solo transporte.** No forma parte del contrato y no cambia el formato del
+archivo: si mañana usás otra carpeta compartida, el diccionario es el mismo.
+
+### Precauciones de una carpeta sincronizada
+
+- Esperá a que **termine la sincronización** antes de abrir o editar el archivo.
+- **Una sesión de edición equivale a un guardado**, como indica el protocolo.
+- Si un programa externo cambió el archivo, el editor **avisa y no lo pisa**: resolvé el
+  conflicto antes de continuar.
+- El bloqueo (`DiccionarioDatos.lock`) es **cooperativo**: ordena el trabajo entre los actores,
+  no reemplaza la coordinación entre ellos.
+- Drive nunca justifica editar el archivo **por fuera del protocolo**.
+
+---
+
+## Paso 1 — Poner el archivo maestro
+
+**Si el proyecto ya tiene un `DiccionarioDatos.yaml`**, copialo a la carpeta compartida.
+
+**Si empieza de cero**, creá ahí mismo un archivo llamado `DiccionarioDatos.yaml`. Podés partir
+de [`../examples/diccionario-ejemplo.yaml`](../examples/diccionario-ejemplo.yaml), que es un
+contrato válido y mínimo, y adaptarlo. El contenido mínimo es:
+
+```yaml
+format_version: 2
+schema_version: 1
+
+project:
+  name: <Proyecto>
+  default_language: es
+  languages: [es]
+  locale: es-AR
+
+database:
+  active_engine: sqlite
+  engines: [sqlite]
+
+tables: []
+```
+
+A partir de este momento, **ese archivo es la fuente de verdad** del modelo de datos del
+proyecto: lo que el código diga de menos se corrige en el diccionario primero.
+
+---
+
+## Paso 2 — Registrar la decisión en el proyecto
+
+En el proyecto (el repositorio de código), creá el archivo `Docs/DICCIONARIO.md` con este
+contenido, completando tus valores reales:
+
+```text
+Sistema: Diccionario
+Skill: skill/SKILL.md y skill/ESPECIFICACION_DICCIONARIO.md
+Versión de skill: 2.0.0
+Format version: 2
+
+Archivo maestro:
+<ruta local sincronizada>/DiccionarioDatos.yaml
+
+Acceso del asistente de diseño:
+Google Drive, carpeta compartida AI-Proyectos/<Proyecto>
+
+Acceso del agente de programación:
+<la misma ruta local sincronizada>
+```
+
+Esto es lo que permite que los dos actores encuentren el archivo **sin depender de recordar una
+conversación anterior**.
+
+---
+
+## Paso 3 — Abrilo con el editor
+
+1. Descargá la aplicación (está en la sección **Releases** de este repositorio) o compilala
+   siguiendo el [README](../README.md).
+2. Abrí el `DiccionarioDatos.yaml` de la carpeta compartida.
+3. Comprobá que abajo diga **0 errores**. Las advertencias no impiden guardar.
+
+Si el editor avisa que el archivo está bloqueado, hay una sesión de escritura abierta en otro
+lado: cerrala o esperá a que termine.
+
+---
+
+## Paso 4 — Habilitar al asistente de diseño
+
+Pegale este mensaje **una vez por proyecto** (el asistente tiene que poder leer la carpeta
+`skill/` de este repositorio, o los archivos que le adjuntes):
+
+> Este proyecto usa el sistema **Diccionario**.
+> La especificación canónica está en la carpeta `skill/` del repositorio: `SKILL.md` y
+> `ESPECIFICACION_DICCIONARIO.md`. Leelos antes de crear, revisar o modificar el modelo de datos.
+> Trabajá en **Modo Diseñador**.
+> El archivo maestro de este proyecto es `DiccionarioDatos.yaml`; su ubicación exacta está
+> registrada en `Docs/DICCIONARIO.md`.
+> Toda modificación del maestro sigue el protocolo de bloqueo, respaldo, historial y guardado
+> seguro que describe la skill.
+
+Desde ese momento, cuando le pidas algo funcional, debería traducirlo a tablas, campos, tipos y
+relaciones, y dejarlo escrito en el diccionario.
+
+---
+
+## Paso 5 — Habilitar al agente de programación
+
+1. **Instalá la skill** en tu agente, si dispone de un mecanismo de skills, o dejale la carpeta
+   `skill/` accesible. Que la tenga instalada evita que tenga que releer el repositorio en cada
+   tarea.
+2. Pegale este mensaje:
+
+> Este proyecto usa el sistema **Diccionario**.
+> Antes de crear o modificar estructuras de datos, leé la skill (`SKILL.md` y
+> `ESPECIFICACION_DICCIONARIO.md`) y el diccionario del proyecto, cuya ruta está en
+> `Docs/DICCIONARIO.md`.
+> Trabajá en **Modo Implementador**: usá la definición física del motor activo y no inventes
+> nombres, tipos, longitudes, relaciones, etiquetas ni presentación que ya estén definidos.
+> Si el desarrollo necesita cambiar el modelo, primero se modifica el diccionario y después el
+> código. La divergencia no se resuelve "arreglando" el diccionario para justificar el código.
+
+---
+
+## Quién hace qué
+
+| Actor | Responsabilidad | Cómo |
+| --- | --- | --- |
+| **La persona** | Decide qué datos necesita el sistema, aprueba los cambios y mantiene la carpeta compartida. Es el único que autoriza modificaciones sensibles. | El editor y esta guía |
+| **Asistente de diseño** | Traduce necesidades funcionales a tablas, campos, tipos, relaciones y presentación. Deja las decisiones resueltas por escrito. | **Modo Diseñador**, sobre el archivo maestro |
+| **Agente de programación** | Consume el contrato: crea y modifica estructuras de datos respetando lo ya definido. | **Modo Implementador**, leyendo el diccionario |
+| **El editor** | Abre, valida y guarda el archivo con bloqueo, respaldo e historial. | La aplicación de escritorio |
+
+---
+
+## Lista de verificación
+
+- [ ] Carpeta creada en Google Drive y **sincronizada localmente** con Google Drive para escritorio.
+- [ ] `DiccionarioDatos.yaml` en esa carpeta.
+- [ ] `Docs/DICCIONARIO.md` en el proyecto, con la ruta real.
+- [ ] El editor abre el archivo y muestra **0 errores**.
+- [ ] El asistente de diseño leyó la skill y trabaja en Modo Diseñador.
+- [ ] El agente de programación tiene la skill instalada y el mensaje del Paso 5.
+- [ ] Probaste un cambio de punta a punta: pediste un campo nuevo, quedó escrito en el
+      diccionario, y el agente lo respetó al implementarlo.
+
+---
+
+## Si algo no cierra
+
+- **El asistente de diseño no encuentra el archivo**: verificá que esté en Drive y que la
+  carpeta esté compartida con la cuenta correcta.
+- **El agente de programación no ve el archivo**: verificá que Google Drive para escritorio esté
+  sincronizando esa carpeta en ese equipo.
+- **El editor dice que el archivo está bloqueado**: quedó una sesión de escritura abierta;
+  cerrala y volvé a intentar.
+- **Aparecen copias duplicadas en Drive**: hubo dos escrituras simultáneas. El protocolo existe
+  justamente para evitarlo: una sesión de edición por vez.
+- **El diccionario y el código dicen cosas distintas**: no se "arregla" el diccionario para
+  justificar el código. Se identifica la divergencia y se decide cuál de los dos cambia.

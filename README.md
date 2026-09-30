@@ -46,7 +46,7 @@ lo mismo.
 
 | Ruta | Qué es |
 | --- | --- |
-| `skill/` | La especificación canónica del formato y las reglas de uso, para personas y para agentes. |
+| `skill/` | La especificación canónica del formato, las reglas de uso y la guía de puesta en marcha en un proyecto. |
 | `examples/` | Un diccionario de ejemplo (clientes, estados de pedido y pedidos) para probar la aplicación sin tener uno propio. |
 | `internal/core/` | El núcleo en Go: modelo, validación, persistencia, historial, bloqueo y diff. |
 | `frontend/` | La interfaz en React + TypeScript. |
@@ -54,6 +54,22 @@ lo mismo.
 
 La aplicación es **opcional**: el contrato vive en el archivo. El editor existe para
 trabajarlo con comodidad y sin romperlo.
+
+## Los dos modos de trabajo
+
+El sistema está definido por **roles**, no por productos: sirve cualquier asistente de diseño y
+cualquier agente de programación.
+
+- **Modo Diseñador** — el asistente que convierte necesidades funcionales en tablas, campos,
+  tipos, relaciones y presentación. Su referencia es la especificación, y las decisiones tienen
+  que quedar escritas en el diccionario.
+- **Modo Implementador** — el agente que consume el contrato para escribir el código: lee el
+  diccionario antes de tocar estructuras de datos, usa la definición física del motor activo y
+  no inventa nombres, tipos ni presentación que ya estén definidos.
+
+El detalle de cada rol, el protocolo de edición completo y los mensajes para pasarle a cada uno
+están en [`skill/PUESTA_EN_MARCHA.md`](skill/PUESTA_EN_MARCHA.md),
+[`skill/SKILL.md`](skill/SKILL.md) y [`skill/USO_EN_PROYECTOS.md`](skill/USO_EN_PROYECTOS.md).
 
 ## Dónde vive el archivo maestro
 
@@ -83,6 +99,32 @@ No hay una ruta predeterminada universal: la ubicación concreta de cada proyect
 registra en `Docs/DICCIONARIO.md` del proyecto consumidor. El detalle completo está en
 [`skill/USO_EN_PROYECTOS.md`](skill/USO_EN_PROYECTOS.md), sección "Dónde vive el archivo
 maestro".
+
+## Puesta en marcha en un proyecto
+
+Tres actores trabajan sobre el mismo archivo: **la persona** que decide, **un asistente de
+diseño** y **un agente de programación**. El orden es este:
+
+1. **Creá la carpeta compartida.** En Google Drive, una carpeta por proyecto
+   (`AI-Proyectos/<Proyecto>`), e instalá **Google Drive para escritorio** para que quede
+   sincronizada y disponible localmente. Ahí van a vivir el diccionario, su historial y su
+   bloqueo. Sin este paso, ninguno de los otros dos actores puede llegar al archivo.
+2. **Poné ahí el archivo maestro**, llamado `DiccionarioDatos.yaml`. Si empezás de cero, podés
+   partir de [`examples/diccionario-ejemplo.yaml`](examples/diccionario-ejemplo.yaml).
+3. **Registrá la ubicación** en `Docs/DICCIONARIO.md` del proyecto, para que ningún actor
+   dependa de recordar una conversación anterior.
+4. **Abrilo con el editor** y comprobá que valide sin errores.
+5. **Habilitá al asistente de diseño** pegándole el mensaje de la guía (una vez por proyecto).
+6. **Habilitá al agente de programación**: instalá la skill en tu agente y pegale su mensaje.
+
+➡️ **Guía paso a paso, con los mensajes listos para copiar y pegar, la lista de verificación y
+las precauciones de la carpeta sincronizada:
+[`skill/PUESTA_EN_MARCHA.md`](skill/PUESTA_EN_MARCHA.md)**
+
+**No es obligatorio usar ChatGPT ni Codex.** El sistema está definido por roles: sirve cualquier
+asistente de diseño —cualquier conversacional con acceso al archivo— y cualquier agente de
+programación —cualquier agente con acceso al código del proyecto—. Esos dos productos son los
+ejemplos del flujo actual, nada más.
 
 ## Qué garantiza el editor al guardar
 
@@ -140,17 +182,6 @@ Pendiente: reordenar arrastrando y soltando; hoy se usan los botones subir y baj
 `format_version: 2`) y el editor funciona, pero el recorrido funcional completo todavía se
 está validando con diccionarios reales. Es un buen momento para probarlo y reportar
 problemas, no para confiar en él como herramienta de producción sin revisar los resultados.
-
-## Uso desde asistentes de IA
-
-- **Modo Diseñador** (ChatGPT web, u otro asistente de diseño): crea y modifica el
-  diccionario. La especificación es el contrato que debe respetar.
-- **Modo Implementador** (asistente local con acceso al código): lee el diccionario antes
-  de crear o modificar estructuras de datos, usa la definición física del motor activo y no
-  inventa nombres, tipos ni presentación que ya estén definidos.
-
-Ambos modos, y el protocolo de edición completo, están en
-[`skill/SKILL.md`](skill/SKILL.md) y en [`skill/USO_EN_PROYECTOS.md`](skill/USO_EN_PROYECTOS.md).
 
 ## Licencia
 
