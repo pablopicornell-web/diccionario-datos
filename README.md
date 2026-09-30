@@ -11,6 +11,21 @@ idiomas y la metadata de cómo se muestra cada dato en formularios y grillas.
 ni los asistentes de IA tienen que volver a inventarlo: lo leen, lo respetan y, si hay que
 cambiarlo, lo cambian primero ahí.
 
+## Descargar
+
+### ⬇ [Aplicación para Windows (64 bits, ~12 MB)](../../releases)
+
+El ejecutable está en la sección **Releases** de este repositorio, dentro de **Assets** (el
+archivo se llama `Diccionario-0.1.0-windows-amd64.exe`). No requiere instalación ni permisos
+de administrador: se descarga y se ejecuta.
+
+> **Windows va a avisar que es de un "editor desconocido"**, porque el binario no está
+> firmado digitalmente. Elegí **Más información → Ejecutar de todas formas**. No es un error
+> ni un virus: es el aviso estándar para cualquier programa sin firma comercial.
+
+Para probar la aplicación **no hace falta compilar nada ni clonar el repositorio**. Si
+querés trabajar sobre el código, mirá [Compilar desde el código](#compilar-desde-el-código).
+
 ## El problema que resuelve
 
 Cuando el modelo de datos no está declarado en ningún lado, cada pantalla lo resuelve como
@@ -79,14 +94,7 @@ El archivo es la única fuente de verdad, así que la escritura está protegida:
   silencio.
 - **Restauración** de cualquier versión del historial, validándola antes de aplicarla.
 
-## Cómo probarlo
-
-**Opción 1: descargar el ejecutable.** En la sección *Releases* de este repositorio se
-publica la aplicación compilada para Windows. Se descomprime y se ejecuta; no hace falta
-instalar nada. Windows puede mostrar un aviso de "editor desconocido" porque el binario no
-está firmado digitalmente: hay que elegir *Más información → Ejecutar de todas formas*.
-
-**Opción 2: compilarlo.**
+## Compilar desde el código
 
 Requisitos: Go 1.25 o superior, Node.js y el CLI de Wails.
 
