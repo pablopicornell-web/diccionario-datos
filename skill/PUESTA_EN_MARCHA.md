@@ -125,40 +125,63 @@ lado: cerrala o esperá a que termine.
 
 ---
 
-## Paso 4 — Habilitar al asistente de diseño
+## Paso 4 — Avisarle al asistente de diseño
 
-Pegale este mensaje **una vez por proyecto** (el asistente tiene que poder leer la carpeta
-`skill/` de este repositorio, o los archivos que le adjuntes):
+**Los pasos 4 y 5 se pueden dar en cualquier orden, y cualquiera de los dos roles puede
+encargarse de la instalación.** No hace falta que hagas nada a mano: pasale la dirección de
+este repositorio y pedile que lo lea, que acceda a la skill y que la deje instalada o
+disponible en su entorno. Después avisale al otro rol, porque **los dos necesitan la skill**
+para trabajar con el mismo criterio: el mensaje de traspaso está al final del Paso 5.
+
+Pegale este mensaje **una vez por proyecto**, reemplazando `<URL del repositorio>` por la
+dirección de este repositorio (es la que ves en la barra del navegador):
 
 > Este proyecto usa el sistema **Diccionario**.
-> La especificación canónica está en la carpeta `skill/` del repositorio: `SKILL.md` y
-> `ESPECIFICACION_DICCIONARIO.md`. Leelos antes de crear, revisar o modificar el modelo de datos.
+> El repositorio canónico es `<URL del repositorio>`. Leelo, accedé a la carpeta `skill/` y
+> dejá la skill instalada o disponible en tu entorno si podés hacerlo.
+> Antes de crear, revisar o modificar el modelo de datos, seguí `skill/SKILL.md` y
+> `skill/ESPECIFICACION_DICCIONARIO.md`.
 > Trabajá en **Modo Diseñador**.
 > El archivo maestro de este proyecto es `DiccionarioDatos.yaml`; su ubicación exacta está
 > registrada en `Docs/DICCIONARIO.md`.
 > Toda modificación del maestro sigue el protocolo de bloqueo, respaldo, historial y guardado
 > seguro que describe la skill.
+> Avisame cuando lo tengas listo, así se lo paso también al rol que programa.
 
 Desde ese momento, cuando le pidas algo funcional, debería traducirlo a tablas, campos, tipos y
 relaciones, y dejarlo escrito en el diccionario.
 
 ---
 
-## Paso 5 — Habilitar al agente de programación
+## Paso 5 — Avisarle al agente de programación
 
-1. **Instalá la skill** en tu agente, si dispone de un mecanismo de skills, o dejale la carpeta
-   `skill/` accesible. Que la tenga instalada evita que tenga que releer el repositorio en cada
-   tarea.
-2. Pegale este mensaje:
+Es el rol que normalmente **puede instalar cosas en tu equipo**, así que si preferís empezar por
+acá, pedile directamente que haga la instalación. Pegale este mensaje, reemplazando
+`<URL del repositorio>`:
 
 > Este proyecto usa el sistema **Diccionario**.
-> Antes de crear o modificar estructuras de datos, leé la skill (`SKILL.md` y
-> `ESPECIFICACION_DICCIONARIO.md`) y el diccionario del proyecto, cuya ruta está en
-> `Docs/DICCIONARIO.md`.
+> El repositorio canónico es `<URL del repositorio>`. Leelo, descargalo si hace falta e instalá
+> la skill en tu entorno con tu mecanismo oficial de skills; si no disponés de uno, dejá la
+> carpeta `skill/` accesible. Tenerla instalada evita releer el repositorio en cada tarea.
+> Antes de crear o modificar estructuras de datos, leé el diccionario del proyecto, cuya ruta
+> está en `Docs/DICCIONARIO.md`.
 > Trabajá en **Modo Implementador**: usá la definición física del motor activo y no inventes
 > nombres, tipos, longitudes, relaciones, etiquetas ni presentación que ya estén definidos.
 > Si el desarrollo necesita cambiar el modelo, primero se modifica el diccionario y después el
 > código. La divergencia no se resuelve "arreglando" el diccionario para justificar el código.
+
+### Mensaje de traspaso entre roles
+
+Cuando uno de los dos ya leyó o instaló la skill, avisale al otro con algo así:
+
+> Ya quedó leída e instalada la skill de **Diccionario** desde `<URL del repositorio>`.
+> Te la paso para que la uses en tu rol —**Modo Diseñador** o **Modo Implementador**, según
+> corresponda—. El archivo maestro del proyecto es `DiccionarioDatos.yaml` y su ubicación está
+> registrada en `Docs/DICCIONARIO.md`.
+
+Los dos roles necesitan la skill: el que diseña, para saber cómo se escribe cada propiedad; el
+que programa, para no inventar lo que ya está definido. Que uno la tenga instalada no exime al
+otro de conocerla.
 
 ---
 
@@ -181,6 +204,8 @@ relaciones, y dejarlo escrito en el diccionario.
 - [ ] El editor abre el archivo y muestra **0 errores**.
 - [ ] El asistente de diseño leyó la skill y trabaja en Modo Diseñador.
 - [ ] El agente de programación tiene la skill instalada y el mensaje del Paso 5.
+- [ ] **Los dos roles quedaron avisados de que existe la skill**, aunque la instalación la haya
+      hecho uno solo de ellos.
 - [ ] Probaste un cambio de punta a punta: pediste un campo nuevo, quedó escrito en el
       diccionario, y el agente lo respetó al implementarlo.
 

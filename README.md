@@ -26,6 +26,10 @@ de administrador: se descarga y se ejecuta.
 Para probar la aplicación **no hace falta compilar nada ni clonar el repositorio**. Si
 querés trabajar sobre el código, mirá [Compilar desde el código](#compilar-desde-el-código).
 
+**Lo único publicado ya compilado es la versión de Windows.** El código fuente, en cambio,
+compila en las tres plataformas: `wails build` genera el ejecutable de la plataforma donde lo
+corras. Los requisitos y los avisos de cada una están en [Plataformas](#plataformas).
+
 ![El editor con el diccionario de ejemplo abierto](assets/editor.png)
 
 *El editor con el diccionario de ejemplo: a la izquierda las tablas, en el medio los campos
@@ -126,6 +130,13 @@ asistente de diseño —cualquier conversacional con acceso al archivo— y cual
 programación —cualquier agente con acceso al código del proyecto—. Esos dos productos son los
 ejemplos del flujo actual, nada más.
 
+**Podés pedirle la instalación a una inteligencia artificial.** No hace falta hacer los pasos a
+mano: pasale a cualquier asistente o agente la dirección de este repositorio y pedile que lo
+lea, que acceda a la skill y que la deje instalada o disponible. Sirve para los dos roles, en
+cualquier orden: el que tenga acceso a tu equipo puede instalarla, y al otro hay que avisarle
+igual, porque **los dos necesitan la skill** para trabajar con el mismo criterio. Los mensajes
+listos para pegar, y el de traspaso entre roles, están en la guía.
+
 ## Qué garantiza el editor al guardar
 
 El archivo es la única fuente de verdad, así que la escritura está protegida:
@@ -162,6 +173,20 @@ La aplicación abre cualquier `DiccionarioDatos.yaml`: el de tus proyectos, o cu
 escribas siguiendo la especificación. Si no tenés uno a mano, abrí
 [`examples/diccionario-ejemplo.yaml`](examples/diccionario-ejemplo.yaml): es un contrato
 válido, mínimo y genérico, pensado para recorrer la interfaz.
+
+## Plataformas
+
+El binario publicado es para **Windows de 64 bits**. El código fuente compila también en
+**macOS** y **Linux**, con estos recaudos:
+
+| Plataforma | Requisitos extra | Resultado de `wails build` | Aviso al abrirlo |
+| --- | --- | --- | --- |
+| **Windows** | WebView2 (ya viene en Windows 10/11) | `build/bin/diccionario.exe` | SmartScreen: "editor desconocido" → *Más información → Ejecutar de todas formas* |
+| **macOS** | Xcode Command Line Tools (`xcode-select --install`), porque el backend necesita compilar Objective-C | `build/bin/diccionario.app` | Gatekeeper: "desarrollador no identificado" → clic derecho sobre la app → *Abrir* |
+| **Linux** | Dependencias de GTK y WebKit; `wails doctor` indica cuáles falta instalar | binario en `build/bin/` | ninguno en particular |
+
+En las tres hacen falta Go 1.25 o superior, Node.js y el CLI de Wails. Ninguna de las versiones
+está firmada digitalmente: de ahí los avisos de Windows y macOS.
 
 ## Alcance del editor
 
