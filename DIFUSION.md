@@ -39,7 +39,7 @@ abre y listo. Si Windows avisa que es de un "editor desconocido" es porque no es
 firmado: *Más información → Ejecutar de todas formas*. El código también compila en Mac
 y Linux, para quien quiera hacerlo.
 
-👉 https://github.com/pablopicornell-web/diccionario-datos
+👉 https://github.com/pablopicornell-web/diccionario-datos/
 
 ¿A alguien le interesa probarlo y contarme qué le parece? Con que uno lo mire y me
 cuente, ya me sirve.
@@ -58,7 +58,7 @@ asistente que diseña y el agente que programa están obligados a respetar.
 Está en etapa de prueba y me gustaría que alguien lo mire. Se baja el ejecutable
 (Windows), se abre y listo: no hace falta programar ni compilar.
 
-👉 https://github.com/pablopicornell-web/diccionario-datos
+👉 https://github.com/pablopicornell-web/diccionario-datos/
 
 ¿A alguien le interesa probarlo y contarme?
 ```
@@ -68,6 +68,12 @@ Está en etapa de prueba y me gustaría que alguien lo mire. Se baja el ejecutab
 - **Poné el enlace del repositorio primero y sin formato**, para que la aplicación de mensajería
   arme la tarjeta con la imagen. Si editás el mensaje después de enviarlo, la vista previa suele
   perderse.
+- **Si cambiás la descripción o la imagen del repositorio, la vista previa puede seguir mostrando
+  la anterior.** Los servicios de mensajería guardan la tarjeta en caché *por dirección exacta*.
+  Para forzar que se regenere, mandá la dirección con una barra al final:
+  `https://github.com/pablopicornell-web/diccionario-datos/` — es la misma página y cuenta como
+  dirección nueva. También ojo con los mensajes ya enviados: conservan la tarjeta con la que
+  nacieron, aunque el repositorio cambie después.
 - **Cerrá con una pregunta.** Es lo que convierte el mensaje en una señal útil: quien responde es
   candidato a probarlo.
 - **Aclará que está en etapa de prueba** y que sirve cualquier devolución, incluso "no entendí
