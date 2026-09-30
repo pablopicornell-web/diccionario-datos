@@ -11,6 +11,11 @@ idiomas y la metadata de cómo se muestra cada dato en formularios y grillas.
 ni los asistentes de IA tienen que volver a inventarlo: lo leen, lo respetan y, si hay que
 cambiarlo, lo cambian primero ahí.
 
+La idea no es nueva: es **el diccionario de datos de Clarion o el análisis de WinDev** —lo que
+en inglés se llama *data dictionary*—, adaptado a cómo se desarrolla hoy. Lo que cambia es quién
+trabaja sobre él: además de la persona, lo leen los asistentes de IA que diseñan y que programan,
+y el archivo los obliga a respetarlo.
+
 ## Descargar
 
 ### ⬇ [Aplicación para Windows (64 bits, ~12 MB)](../../releases)
