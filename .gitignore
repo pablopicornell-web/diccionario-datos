@@ -1,0 +1,24 @@
+# Dependencias y caches
+/node_modules/
+/frontend/node_modules/
+/.cache/
+
+# Artefactos de compilacion y distribucion
+/build/bin/
+/dist/
+/frontend/dist/*
+!/frontend/dist/gitkeep
+
+# Datos y configuracion de ejecucion
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos temporales del editor y del sistema
+DiccionarioDatos.lock
+*.tmp
+*.temp
+*.log
+*.swp
+.DS_Store
+Thumbs.db

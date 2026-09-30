@@ -1,0 +1,579 @@
+# Diccionario de ejemplo (genérico y mínimo)
+#
+# Sirve para abrir la aplicación sin tener un diccionario propio.
+# Es un contrato válido de `format_version: 2` y está pensado para mostrar, en
+# pocas líneas, las propiedades principales del formato: tipos lógicos,
+# definición física por motor, relaciones y lookups, valores permitidos,
+# índices y órdenes de grilla, etiquetas en dos idiomas, auditoría y
+# lifecycle por estado.
+
+format_version: 2
+schema_version: 1
+
+project:
+  name: ejemplo
+  description: Proyecto de ejemplo con clientes y pedidos
+  default_language: es
+  languages:
+  - es
+  - en
+  locale: es-AR
+
+database:
+  active_engine: sqlite
+  engines:
+  - sqlite
+  - postgres
+
+tables:
+
+- name: clientes
+  label:
+    es: Clientes
+    en: Customers
+  description: Personas o empresas que realizan pedidos.
+  status: active
+  table_role: main
+  # La representación visible de un cliente es su nombre.
+  display_fields:
+  - nombre
+  primary_key:
+  - id
+  lifecycle:
+    delete_mode: status
+    field: estado
+    deleted_value: baja
+  ui:
+    maintenance: true
+    navigation:
+      section: main
+    actions:
+      create: true
+      edit: true
+      delete: true
+      view: true
+    default_sort: idx_clientes_nombre
+    available_sorts:
+    - index: idx_clientes_nombre
+      label:
+        es: Nombre
+        en: Name
+    - index: idx_clientes_alta
+      label:
+        es: Más recientes
+        en: Newest
+  fields:
+  - name: id
+    label:
+      es: ID
+      en: ID
+    logical_type: integer
+    required: true
+    generated:
+      strategy: auto_increment
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: SERIAL
+    ui:
+      control: number
+      form_visible: false
+      list_visible: false
+  - name: nombre
+    label:
+      es: Nombre
+      en: Name
+    logical_type: string
+    length: 80
+    required: true
+    unique: true
+    validation:
+      allow_empty: false
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 80
+    ui:
+      control: text
+      width: 320
+      searchable: true
+      sortable: true
+      filterable: true
+      column_width: 260
+      column_flexible: true
+    auditable: true
+  - name: email
+    label:
+      es: Correo
+      en: Email
+    logical_type: string
+    length: 120
+    semantic:
+      kind: email
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 120
+    ui:
+      control: text
+      width: 320
+      searchable: true
+      column_width: 240
+  - name: activo
+    label:
+      es: Activo
+      en: Active
+    logical_type: boolean
+    default:
+      kind: literal
+      value: true
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: BOOLEAN
+    ui:
+      control: switch
+      align: center
+      column_width: 90
+  - name: estado
+    label:
+      es: Estado
+      en: Status
+    logical_type: string
+    length: 10
+    default:
+      kind: literal
+      value: activo
+    allowed_values:
+    - value: activo
+      label:
+        es: Activo
+        en: Active
+      order: 1
+      active: true
+      color: green
+    - value: baja
+      label:
+        es: Baja
+        en: Inactive
+      order: 2
+      active: true
+      color: gray
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 10
+    ui:
+      control: select
+      column_width: 110
+      filterable: true
+    auditable: true
+  - name: alta
+    label:
+      es: Alta
+      en: Created
+    logical_type: datetime
+    semantic:
+      kind: created_at
+    default:
+      kind: system
+      value: current_datetime
+    physical:
+      sqlite:
+        type: DATETIME
+      postgres:
+        type: TIMESTAMPTZ
+    ui:
+      control: datetime
+      form_readonly: true
+      sortable: true
+      column_width: 150
+    auditable: true
+  - name: modificado
+    label:
+      es: Modificado
+      en: Updated
+    logical_type: datetime
+    semantic:
+      kind: updated_at
+    physical:
+      sqlite:
+        type: DATETIME
+      postgres:
+        type: TIMESTAMPTZ
+    ui:
+      control: datetime
+      form_readonly: true
+      list_visible: false
+    auditable: true
+  - name: observaciones
+    label:
+      es: Observaciones
+      en: Notes
+    logical_type: text
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: TEXT
+    ui:
+      control: textarea
+      form_visible: true
+      list_visible: false
+      searchable: true
+  indexes:
+  # Este índice existe para sostener `default_sort` y el orden disponible por
+  # nombre. El campo ya es único, así que no aporta unicidad nueva.
+  - name: idx_clientes_nombre
+    fields:
+    - name: nombre
+      order: asc
+  - name: idx_clientes_alta
+    fields:
+    - name: alta
+      order: desc
+
+- name: estados_pedido
+  label:
+    es: Estados de pedido
+    en: Order statuses
+  description: Valores administrables que puede tomar un pedido.
+  status: active
+  table_role: lookup
+  display_fields:
+  - nombre
+  primary_key:
+  - id
+  lifecycle:
+    delete_mode: status
+    field: estado
+    deleted_value: baja
+  ui:
+    maintenance: true
+    navigation:
+      section: configuration
+    actions:
+      create: true
+      edit: true
+      delete: true
+      view: true
+    default_sort: idx_estados_pedido_nombre
+  fields:
+  - name: id
+    label:
+      es: ID
+      en: ID
+    logical_type: integer
+    required: true
+    generated:
+      strategy: auto_increment
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: SERIAL
+    ui:
+      control: number
+      form_visible: false
+      list_visible: false
+  - name: nombre
+    label:
+      es: Nombre
+      en: Name
+    logical_type: string
+    length: 40
+    required: true
+    unique: true
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 40
+    ui:
+      control: text
+      column_width: 220
+      column_flexible: true
+      searchable: true
+      sortable: true
+    auditable: true
+  - name: estado
+    label:
+      es: Estado
+      en: Status
+    logical_type: string
+    length: 10
+    default:
+      kind: literal
+      value: activo
+    allowed_values:
+    - value: activo
+      label:
+        es: Activo
+        en: Active
+      order: 1
+    - value: baja
+      label:
+        es: Baja
+        en: Inactive
+      order: 2
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 10
+    ui:
+      control: switch
+      column_width: 90
+  indexes:
+  - name: idx_estados_pedido_nombre
+    fields:
+    - name: nombre
+      order: asc
+
+- name: pedidos
+  label:
+    es: Pedidos
+    en: Orders
+  description: Pedidos realizados por los clientes.
+  status: active
+  table_role: main
+  display_fields:
+  - numero
+  - cliente_id
+  primary_key:
+  - id
+  lifecycle:
+    delete_mode: status
+    field: estado
+    deleted_value: baja
+  ui:
+    maintenance: true
+    navigation:
+      section: main
+    actions:
+      create: true
+      edit: true
+      delete: true
+      view: true
+    default_sort: idx_pedidos_fecha
+    available_sorts:
+    - index: idx_pedidos_fecha
+      label:
+        es: Fecha
+        en: Date
+    - index: idx_pedidos_cliente
+      label:
+        es: Cliente
+        en: Customer
+  fields:
+  - name: id
+    label:
+      es: ID
+      en: ID
+    logical_type: integer
+    required: true
+    generated:
+      strategy: auto_increment
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: SERIAL
+    ui:
+      control: number
+      form_visible: false
+      list_visible: false
+  - name: numero
+    label:
+      es: Número
+      en: Number
+    logical_type: string
+    length: 20
+    required: true
+    semantic:
+      kind: code
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 20
+    ui:
+      control: text
+      column_width: 130
+      searchable: true
+      format:
+        leading_zeros: 5
+    auditable: true
+  - name: cliente_id
+    label:
+      es: Cliente
+      en: Customer
+    logical_type: integer
+    required: true
+    relation:
+      table: clientes
+      field: id
+      on_delete: restrict
+      on_update: cascade
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: INTEGER
+    ui:
+      control: lookup
+      column_width: 220
+      filterable: true
+      lookup:
+        allow_create: true
+        search_modes:
+        - prefix
+        - contains
+        default_search_mode: prefix
+        user_can_switch_mode: true
+    auditable: true
+  - name: estado_pedido_id
+    label:
+      es: Estado
+      en: Status
+    logical_type: integer
+    required: true
+    relation:
+      table: estados_pedido
+      field: id
+      on_delete: restrict
+      on_update: cascade
+    physical:
+      sqlite:
+        type: INTEGER
+      postgres:
+        type: INTEGER
+    ui:
+      control: lookup
+      column_width: 170
+      filterable: true
+      lookup:
+        allow_create: false
+        search_modes:
+        - prefix
+        default_search_mode: prefix
+        user_can_switch_mode: false
+  - name: fecha
+    label:
+      es: Fecha
+      en: Date
+    logical_type: date
+    default:
+      kind: system
+      value: current_date
+    physical:
+      sqlite:
+        type: DATE
+      postgres:
+        type: DATE
+    ui:
+      control: date
+      column_width: 120
+      sortable: true
+    auditable: true
+  - name: total
+    label:
+      es: Total
+      en: Total
+    logical_type: decimal
+    precision: 12
+    scale: 2
+    semantic:
+      kind: currency
+    validation:
+      min: 0
+    physical:
+      sqlite:
+        type: REAL
+      postgres:
+        type: DECIMAL
+    ui:
+      control: number
+      align: right
+      column_width: 120
+      format:
+        decimal_places: 2
+        thousands_separator: true
+    auditable: true
+  - name: observaciones
+    label:
+      es: Observaciones
+      en: Notes
+    logical_type: text
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: TEXT
+    ui:
+      control: textarea
+      list_visible: false
+      searchable: true
+  - name: estado
+    label:
+      es: Estado
+      en: Status
+    logical_type: string
+    length: 12
+    default:
+      kind: literal
+      value: vigente
+    allowed_values:
+    - value: vigente
+      label:
+        es: Vigente
+        en: Current
+      order: 1
+    - value: entregado
+      label:
+        es: Entregado
+        en: Delivered
+      order: 2
+    - value: baja
+      label:
+        es: Baja
+        en: Cancelled
+      order: 3
+    physical:
+      sqlite:
+        type: TEXT
+      postgres:
+        type: VARCHAR
+        length: 12
+    ui:
+      control: select
+      column_width: 120
+      filterable: true
+    auditable: true
+  indexes:
+  - name: idx_pedidos_fecha
+    fields:
+    - name: fecha
+      order: desc
+  - name: idx_pedidos_cliente
+    fields:
+    - name: cliente_id
+      order: asc
+    - name: fecha
+      order: desc
+  unique_constraints:
+  # Un mismo número de pedido no puede repetirse para el mismo cliente.
+  - fields:
+    - cliente_id
+    - numero
