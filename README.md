@@ -55,6 +55,7 @@ lo mismo.
 | `internal/core/` | El núcleo en Go: modelo, validación, persistencia, historial, bloqueo y diff. |
 | `frontend/` | La interfaz en React + TypeScript. |
 | `build/`, `wails.json` | Configuración de compilación del escritorio (Wails). |
+| `DIFUSION.md` | Textos sugeridos para presentar el proyecto a otras personas. |
 
 La aplicación es **opcional**: el contrato vive en el archivo. El editor existe para
 trabajarlo con comodidad y sin romperlo.
