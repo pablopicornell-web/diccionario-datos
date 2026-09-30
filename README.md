@@ -120,6 +120,9 @@ diseño** y **un agente de programación**. El orden es este:
 4. **Abrilo con el editor** y comprobá que valide sin errores.
 5. **Habilitá al asistente de diseño** pegándole el mensaje de la guía (una vez por proyecto).
 6. **Habilitá al agente de programación**: instalá la skill en tu agente y pegale su mensaje.
+7. **Dejá la indicación fija en cada rol**, para no tener que repetirla: en la configuración del
+   asistente de diseño y en el `AGENTS.md` del proyecto para el agente. El detalle está en la
+   guía.
 
 ➡️ **Guía paso a paso, con los mensajes listos para copiar y pegar, la lista de verificación y
 las precauciones de la carpeta sincronizada:

@@ -106,6 +106,8 @@ El asistente de diseño debe entonces consultar la skill canónica desde el repo
 
 No depender de recordar una conversación anterior.
 
+Para que la indicación quede guardada en la configuración del asistente y no haya que repetirla en cada conversación, ver "Que no se olvide: dejar la indicación fija" en `PUESTA_EN_MARCHA.md`.
+
 ---
 
 ## 4. Responsabilidad del asistente de diseño
@@ -182,6 +184,8 @@ La instalación debe incluir como mínimo:
 - `VERSION`
 
 La copia local es una instalación de trabajo. La fuente canónica sigue siendo el repositorio canónico de la skill.
+
+Conviene además dejar la indicación escrita dentro del proyecto —en `AGENTS.md` o en el archivo de instrucciones que el agente lea automáticamente—: ver "Que no se olvide: dejar la indicación fija" en `PUESTA_EN_MARCHA.md`.
 
 Ver "Dónde vive el archivo maestro" más abajo, en esta misma sección, para la ubicación del `DiccionarioDatos.yaml` del proyecto.
 

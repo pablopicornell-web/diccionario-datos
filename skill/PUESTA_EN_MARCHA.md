@@ -185,6 +185,53 @@ otro de conocerla.
 
 ---
 
+## Que no se olvide: dejar la indicación fija
+
+Una indicación pegada una vez se pierde: el asistente abre un chat nuevo y no se acuerda, o el
+agente arranca otra sesión sin el contexto. Para que cada rol lo sepa **siempre**, la indicación
+tiene que quedar guardada donde ese rol la lee por costumbre.
+
+### Asistente de diseño
+
+- **Guardá la indicación en su configuración.** Si tu asistente tiene "proyectos" o
+  "instrucciones personalizadas", pegá ahí el mensaje del Paso 4: queda aplicado en todas las
+  conversaciones de ese proyecto sin volver a escribirlo.
+- **Dejale la skill a mano.** Si podés adjuntar archivos al proyecto, subí `SKILL.md` y
+  `ESPECIFICACION_DICCIONARIO.md` descargados del repositorio. Así no depende de leerlos desde
+  GitHub en cada conversación.
+- **Si no tiene ninguna de esas funciones**, guardá el mensaje en un archivo tuyo y pegalo al
+  comenzar cada conversación nueva.
+
+### Agente de programación
+
+- **Escribí la indicación dentro del proyecto.** Va en `AGENTS.md` —o en el archivo de
+  instrucciones que tu agente lea automáticamente—. Es lo que hace que la cumpla en cada sesión
+  sin que se lo recuerdes, y es como funcionan hoy los proyectos que ya usan Diccionario.
+- **La skill puede ser global; la indicación no.** Instalar la skill una vez para todos tus
+  proyectos es cómodo y no molesta a nadie. Lo que **no** conviene es dejar global la frase "este
+  proyecto usa Diccionario", porque en los proyectos que no lo usan sería una orden equivocada.
+- **Si no hay mecanismo de skills**, dejá la carpeta `skill/` dentro del proyecto y apuntá a ella
+  desde `AGENTS.md`.
+
+### La regla que hace que se den cuenta solos
+
+Dejá escrita esta regla para los dos roles y no dependas de acordarte:
+
+> Antes de crear o modificar estructuras de datos, comprobá si el proyecto usa **Diccionario**:
+> si existe `Docs/DICCIONARIO.md`, o un `DiccionarioDatos.yaml` en la ubicación registrada, el
+> proyecto lo usa y hay que respetar el contrato. Si no existe, no lo apliques ni lo inventes.
+> Si dudás, preguntá antes de tocar el modelo.
+
+Así el sistema se activa **cuando vos decidís usarlo** en un proyecto, y no se mete donde no
+corresponde.
+
+### Cómo comprobar que quedó bien configurado
+
+Una prueba de humo, una vez por proyecto: pedile a cada rol algo que solo puede responder si leyó
+el diccionario. Por ejemplo: *"¿qué tablas tiene este proyecto y cuál es el motor activo?"*. Si
+contesta con los datos reales del archivo, quedó configurado. Si improvisa, o pregunta de qué le
+estás hablando, falta la indicación o falta el archivo.
+
 ## Quién hace qué
 
 | Actor | Responsabilidad | Cómo |
