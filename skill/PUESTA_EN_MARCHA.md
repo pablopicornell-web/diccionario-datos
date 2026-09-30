@@ -11,6 +11,14 @@ diseño* se refiere a cualquier asistente conversacional con acceso al archivo d
 con acceso al código del proyecto (por ejemplo, Codex). No es obligatorio usar ninguno de los
 dos en particular.
 
+> **Recomendación: no hagas la instalación a mano; pedísela a los propios agentes.**
+> Pasales la dirección de este repositorio y pediles que lo lean, que accedan a la skill y que
+> la dejen instalada o disponible. El agente de programación suele ser el que puede instalarla en
+> tu equipo; el asistente de diseño, el que puede guardar la indicación en su configuración.
+> Basta con que **uno** la instale, pero **los dos** tienen que saber que existe.
+> Los mensajes listos para pegar están en los pasos 4 y 5, y el de traspaso entre roles al final
+> del paso 5.
+
 ---
 
 ## Antes de empezar: dónde va a vivir el diccionario
