@@ -235,7 +235,7 @@ Se recomienda registrar en `Docs/DICCIONARIO.md`:
 
 ```text
 Skill Diccionario instalada: 2.0.0
-Format version soportado: 1
+Format version soportado: 2
 Fuente: el repositorio canónico de la skill
 ```
 
